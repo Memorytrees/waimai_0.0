@@ -9,19 +9,21 @@
 </template>
 
 <script>
-   export default {
-       data () {
+    
+    export default {
+        data () {
             return {
 
             }
-       },
-       components: {
+        },
+        components: {
 
-       },
-       props: {
-           title: String
-       }
-   }
+        },
+        props: {
+            title: String
+        }
+        
+    }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
