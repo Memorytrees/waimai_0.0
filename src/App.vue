@@ -1,22 +1,27 @@
 <template>
    <div id="app">
        <router-view/>
-       <FooterGuide/>
+       <FooterGuide v-show="$route.meta.showFooter"/>
    </div>
 </template>
 
 <script>
     import FooterGuide from './components/FooterGuide/FooterGuide.vue'
-   export default {
-       data () {
+    import { reqFoodTypes } from './api';
+    export default {
+        async mounted () {
+            const result = await reqFoodTypes();
+            console.log(result);
+        },
+        data () {
             return {
 
             }
-       },
-       components: {
-           FooterGuide
-       }
-   }
+        },
+        components: {
+            FooterGuide
+        }
+    }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
