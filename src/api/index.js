@@ -13,12 +13,12 @@ export const reqShops = (longitude, latitude) => ajax(BASE_URL+'/shops', {longit
 // 4、根据经纬度和关键字搜索商铺列表
 export const reqSearchShop = (geohash, keyword) => ajax(BASE_URL+'/search_shops', {geohash, keyword})
 // 6、用户名密码登陆
-export const repPwdLogin = ({pwd, name, captcha}) => ajax(BASE_URL+'/login_pwd', {name, pwd, captcha}, 'POST')
+export const reqPwdLogin = ({pwd, name, captcha}) => ajax(BASE_URL+'/login_pwd', {name, pwd, captcha}, 'POST')
 // 7、发送短信验证码
-export const repSendCode = (phone) => ajax(BASE_URL+'/sendcode', {phone})
+export const reqSendCode = (phone) => ajax(BASE_URL+'/sendcode', {phone})
 // 8、手机号验证码登陆
-export const repSmsLogin = (phone, code) => ajax(BASE_URL+'/login_sms', {phone, code}, 'POST')
+export const reqSmsLogin = (phone, code) => ajax(BASE_URL+'/login_sms', {phone, code}, 'POST')
 // 9、根据会话获取用户信息
-export const repUserInfo = () => ajax(BASE_URL+'/userinfo')
+export const reqUserInfo = () => ajax(BASE_URL+'/userinfo')
 // 10、用户登出
-export const repLogout = () => ajax(BASE_URL+'/logout')
+export const reqLogout = () => ajax(BASE_URL+'/logout')

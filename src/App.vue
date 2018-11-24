@@ -12,6 +12,7 @@
     export default {
         mounted () {
             this.getAddress();
+            this.getUserInfo();
         },
         data () {
             return {
@@ -19,7 +20,7 @@
             }
         },
         methods: {
-            ...mapActions(['getAddress'])
+            ...mapActions(['getAddress', 'getUserInfo'])
         },
         components: {
             FooterGuide

@@ -2,12 +2,20 @@
     <section class="msite">
         <!--首页头部-->
         <HeaderTop :title=address.name>
-            <span class="header_search" slot="left">
+            <router-link class="header_search" slot="left" to="/search">
                 <i class="iconfont icon-icon-sousuo"></i>
-            </span>
-            <span class="header_login" slot="right">
-                <span class="header_login_text">登录|注册</span>
-            </span>
+            </router-link>
+            <router-link class="header_login" slot="right" :to="userInfo._id ? '/userInfo' : '/login'" >
+                
+                <span class="header_login_text" v-if="!userInfo._id">
+                    登录|注册
+                </span>
+                
+                <span class="header_login_text" v-else>
+                    <i class="iconfont icon-icon_personal_s"></i>
+                </span>
+                
+            </router-link>
         </HeaderTop> 
 
         <!--首页导航-->
@@ -47,7 +55,7 @@ import Swiper from 'swiper';
 import 'swiper/dist/css/swiper.min.css';
 import HeaderTop from "../../components/HeaderTop/HeaderTop.vue"
 import ShopList from "../../components/ShopList/ShopList.vue"
-import {mapState} from 'Vuex';
+import {mapState} from 'vuex';
 
 export default {
     data() {
@@ -60,7 +68,7 @@ export default {
         ShopList
     },
     computed: {
-        ...mapState(['address', 'categorys']),
+        ...mapState(['address', 'categorys', 'userInfo']),
         // 根据categorys一维数组生成一个二维数组
         // 小数组中的元素个数最大是8
         categorysArr() {

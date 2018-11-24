@@ -60,7 +60,7 @@
 
 <script>
 import AlertTip from '../../components/AlertTip/AlertTip.vue'
-import {repSendCode, repSmsLogin, repPwdLogin} from '../../api'
+import {repSendCode, repSmsLogin, reqPwdLogin} from '../../api'
 export default {
     data() {
         return {
@@ -176,6 +176,7 @@ export default {
                 this.showAlert(msg)
             }
         },
+        // 关闭警告框
         closeTip () {
             this.alertShow = false;
             this.alertText = '';
