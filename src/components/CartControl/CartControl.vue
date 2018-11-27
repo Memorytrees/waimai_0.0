@@ -1,11 +1,11 @@
 <template>
     <div class="cartcontrol">
         <transition name="move"> 
-            <div class="iconfont icon-remove" v-if="food.count" @click="updateFoodCount(false)"></div>
+            <div class="iconfont icon-remove" v-if="food.count" @click.stop="updateFoodCount(false)"></div>
         </transition>
         
         <div class="cart-count" v-if="food.count">{{ food.count }}</div>
-        <div class="iconfont icon-iconaddcircle" @click="updateFoodCount(true)"></div>
+        <div class="iconfont icon-iconaddcircle" @click.stop="updateFoodCount(true)"></div>
     </div>
 </template>
 
