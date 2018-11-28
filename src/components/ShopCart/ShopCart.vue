@@ -61,7 +61,7 @@
             payClass () {
                 const { totalPrice } = this
                 const { minPrice } = this.info
-                return totalPrice => minPrice ? 'enough' : 'not-enough'
+                return totalPrice >= minPrice ? 'enough' : 'not-enough'
             },
             payText () {
                 const { totalPrice } = this

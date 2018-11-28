@@ -29,26 +29,26 @@
             
             <div class="ratingselect">
                 <div class="rating-type border-1px">
-                    <span class="block positive active">
-                        全部<span class="count">30</span>
+                    <span class="block positive" :class="{active: selectType===2}" @click="setSelectType(2)">
+                        全部<span class="count">{{ ratings.length }}</span>
                     </span>
-                    <span class="block positive">
-                        满意<span class="count">28</span>
+                    <span class="block positive" :class="{active: selectType===0}" @click="setSelectType(0)">
+                        满意<span class="count">{{ positiveSize }}</span>
                     </span>
-                    <span class="block negative">
-                        不满意<span class="count">2</span>
+                    <span class="block negative" :class="{active: selectType===1}" @click="setSelectType(1)">
+                        不满意<span class="count">{{ ratings.length-positiveSize }}</span>
                     </span>
                 </div>
-                <div class="switch on">
-                    <span class="iconfont icon-check_circle"></span>
+                <div class="switch" :class="{ on: onlyShowText }" @click="toggleOnlyShowText">
+                    <span class="iconfont icon-duigou"></span>
                     <span class="text">只看有内容的评价</span>
                 </div>
             </div>
             <div class="rating-wrapper">
                 <ul>
-                    <li class="rating-item" v-for="(rating, index) in ratings" :key="index">
+                    <li class="rating-item" v-for="(rating, index) in filterRatings" :key="index">
                         <div class="avatar">
-                            <img width="28" height="28" src="rating.avatar">
+                            <img width="28" height="28" :src="rating.avatar">
                         </div>
                         <div class="content">
                             <h1 class="name">{{ rating.username }}</h1>
@@ -58,11 +58,11 @@
                             </div>
                             <p class="text">{{ rating.text }}</p>
                             <div class="recommend">
-                                <span class="iconfont" :class="info.rateType===0 ? 'icon-thumb_up' : 'icon-thumb_down'"></span>
-                                <span class="item" v-for="(item, index) in info.recommend"></span>
+                                <span class="iconfont" :class="rating.rateType===0 ? 'icon-thumb_up' : 'icon-thumb_down'"></span>
+                                <span class="item" v-for="(item, index) in rating.recommend" :key="index">{{ item }}</span>
                                 
                             </div>
-                            <div class="time">2016-07-23 21:52:44</div>
+                            <div class="time">{{ rating.rateTime }}</div>
                         </div>
                     </li>
                     
@@ -73,19 +73,56 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import BScroll from 'better-scroll'
+    import { mapState, mapGetters } from 'vuex'
     import Star from '../../../components/Star/Star.vue'
     export default {
         data () {
             return {
-
+                onlyShowText: true,  // 是否只显示有文本内容的
+                selectType: 2        // 选择的评价类型：0 满意 1 不满意 2 全部
             }
         },
         mounted () {
-            this.$store.dispatch('getShopRatings')
+            this.$store.dispatch('getShopRatings', () => {
+                this.$nextTick(() => {
+                    new BScroll(this.$refs.ratings, {
+                        click: true
+                    })
+                })
+            })
         },
         computed: {
-            ...mapState(['info','ratings'])
+            ...mapState(['info','ratings']),
+            ...mapGetters(['positiveSize']),
+
+            filterRatings () {
+                // 得到相关的数据
+                const { ratings, onlyShowText, selectType } = this
+                // 产生一个过滤新数组
+                return ratings.filter(rating => {
+                    const { rateType, text } = rating
+                    /*
+                        条件1:
+                            selectType: 0/1/2
+                            rateType: 0/1
+                            selectType===2 || selectType===rateType
+                        条件2
+                            onlyShowText: true/false
+                            text: 有值/没值
+                            !onlyShowText || text.length>0
+                    */
+                    return (selectType===2 || selectType===rateType) && (!onlyShowText || text.length>0)
+                })
+            }
+        },
+        methods: {
+            setSelectType (selectType) {
+                this.selectType = selectType;
+            },
+            toggleOnlyShowText () {
+                this.onlyShowText = !this.onlyShowText;
+            }
         },
         components: {
             Star
@@ -197,9 +234,9 @@
             color: rgb(147, 153, 159)
             font-size: 0
             &.on
-                .icon-check_circle
+                .icon-duigou
                     color: $green
-            .icon-check_circle
+            .icon-duigou
                 display: inline-block
                 vertical-align: top
                 margin-right: 4px
